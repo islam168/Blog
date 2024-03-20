@@ -1,0 +1,22 @@
+{% load static %}
+<!--Тег {% load static %} сообщает Django, что нужно загрузить статические
+шаблонные теги (static), предоставляемые приложением django.contrib.staticfiles
+После их загрузки шаблонный тег static можно использовать во всем этом шаблоне.
+С помощью указанного шаблонного тега можно вставлять статические файлы, такие как файл blog.css-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="sidebar">
+        <h2>My blog</h2>
+        <p>This is my blog.</p>
+    </div>
+</body>
+</html>

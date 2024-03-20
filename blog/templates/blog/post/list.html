@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+<!--Шаблонный тег extends сообщает Django, что надо наследовать от шаблона blog/base.html.-->
+
+{% block title %} My blog {% endblock %}
+
+{% block content %}
+    <h1>My blog</h1>
+    {% for post in posts %}
+        <h2>
+            <a href="{% url 'blog:post_detail' post.id %}">
+<!--                URL-адрес формируется с использованием предоставляемого Django шаблонного тега url.
+                    Этот шаблонный тег позволяет формировать URL-адреса динамически по их имени. Использовал
+                    blog:post_detail, чтобы ссылаться на URL-адрес post_detail в именном пространстве blog.
+                    Затем передал необходимый параметр post.id, чтобы сформировать URL-адрес для каждого поста.-->
+                {{post.title}}
+            </a>
+        </h2>
+        <p class=date">
+            Опубликовано {{post.publish}}. Автор: {{post.author}}
+        </p>
+        {{ post.body|truncatewords:30|linebreaks }}
+<!--В теле поста применяются два шаблонных фильтра: truncatewords усекает значение до указанного числа слов
+    linebreaks конвертирует результат в разрывы строк в формате HTML-->
+    {% endfor %}
+{% endblock %}

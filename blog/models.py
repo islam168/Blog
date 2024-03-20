@@ -3,9 +3,17 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return (super().get_queryset().
+                filter(status=Post.Status.PUBLISHED))  # Метод get_queryset() менеджера возвращает набор запросов
+        # QuerySet, который будет исполнен. Этот метод был определен, чтобы сформировать конкретно-прикладной
+        # набор запросов в QuerySet, фильтрующий посты по их статусу и возвращающий посты со статусов PUBLISHED
+
+
 class Post(models.Model):
 
-    class Status(models.TextChoices):  # Класс Status используется для определения допустимых значений поля status
+    class Status(models.TextChoices):  # Класс Status используется для определения допустимых значений поля status ниже
         DRAFT = 'DF', 'DRAFT'
         PUBLISHED = 'PB', 'Published'
 
@@ -29,6 +37,8 @@ class Post(models.Model):
                               default=Status.DRAFT)
     # status представляет статус поста в блоге. choices  указывает, что значение поля status должно быть
     # одним из значений, определенных в классе Status
+    objects = models.Manager()  # Менеджер применимый по умолчанию
+    published = PublishedManager()  # конкретно-прикладной менеджер для опубликованных постов
 
     class Meta:
         ordering = ['-publish']  # Атрибут ordering - сообщает Django, что он должен
